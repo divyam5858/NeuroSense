@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Assessment Results - NeuroSense</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            width: 35px;
+        }
+
+        .nav-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding-bottom: 6px;
+        }
+
+        .nav-menu a.active {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        /* PAGE */
+        .container {
+            padding: 40px 60px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        /* RESULT CARD */
+        .result-box {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 30px;
+        }
+
+        .risk-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .risk-row:last-child {
+            border-bottom: none;
+        }
+
+        .risk-name {
+            font-weight: bold;
+        }
+
+        .risk-score {
+            font-weight: bold;
+        }
+
+        .low { color: #059669; }
+        .medium { color: #d97706; }
+        .high { color: #dc2626; }
+
+        /* SUMMARY */
+        .summary-box {
+            background: #f9fafb;
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 35px;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* BUTTONS */
+        .btn-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-gray {
+            background: #e5e7eb;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .btn-blue {
+            background: #2563eb;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-blue:hover {
+            background: #1e4ed8;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+        <a href="patient_dashboard">Dashboard</a>
+        <a href="assessment" class="active">Assessment</a>
+        <a href="timeline">Health Timeline</a>
+        <a href="ehr">My EHR</a>
+        <a href="patient_profile">My Profile</a>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <div class="title">Assessment Results</div>
+    <div class="subtitle">AI-powered neurological risk analysis</div>
+
+    <!-- RISK SCORES -->
+    <div class="result-box">
+        <h3>Risk Scores</h3>
+
+        {% for r in risk_scores %}
+        <div class="risk-row">
+            <div class="risk-name">{{ r.disease }}</div>
+
+            <div class="risk-score
+                {% if r.score < 30 %}low
+                {% elif r.score < 70 %}medium
+                {% else %}high{% endif %}">
+                {{ r.score }}%
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- DIAGNOSIS SUMMARY -->
+    <div class="summary-box">
+        <div class="summary-title">AI Diagnosis</div>
+        <p><b>Primary Diagnosis:</b> {{ diagnostic.primary_diagnosis }}</p>
+        <p><b>Confidence:</b> {{ diagnostic.diagnosis_confidence }}%</p>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="btn-row">
+        <a href="patient_assessment" class="btn-gray">← Retake Assessment</a>
+        <a href="patient_dashboard" class="btn-blue">Go to Dashboard →</a>
+    </div>
+
+</div>
+
+</body>
+</html>

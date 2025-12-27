@@ -1,0 +1,408 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Start Assessment - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            width: 35px;
+        }
+
+        .nav-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding-bottom: 6px;
+        }
+
+        .nav-menu a.active {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        /* PAGE LAYOUT */
+        .container {
+            padding: 40px 60px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .page-number {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* VOICE MODE BOX */
+        .voice-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 30px;
+        }
+
+        .voice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .voice-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .voice-sub {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .toggle {
+            width: 55px;
+            height: 28px;
+            background: #d1d5db;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-circle {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: 0.25s;
+        }
+
+        .toggle.active {
+            background: #2563eb;
+        }
+
+        .toggle.active .toggle-circle {
+            left: 28px;
+        }
+
+        /* QUESTION BOX */
+        .question-box {
+            margin-top: 20px;
+            background: #f9fafb;
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        .question-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-blue {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        .btn-blue:hover {
+            background: #1e40af;
+        }
+
+        .btn-gray {
+            background: #f3f4f6;
+        }
+
+        /* PROGRESS BAR */
+        .progress {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .progress-fill {
+            width: 25%;
+            height: 100%;
+            background: #1d9bf0;
+            border-radius: 10px;
+        }
+
+        /* SECTION BOX */
+        .section-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        select,
+        input[type=number],
+        input[type=text] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            margin-top: 5px;
+        }
+
+        /* SLIDER */
+        .slider-row {
+            margin-bottom: 25px;
+        }
+
+        .slider-label {
+            font-weight: bold;
+        }
+
+        .slider-value {
+            float: right;
+        }
+
+        input[type=range] {
+            width: 100%;
+            margin-top: 10px;
+            accent-color: #1d9bf0;
+        }
+
+        /* NEXT BUTTON */
+        .btn-next {
+            padding: 14px 38px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            float: right;
+            cursor: pointer;
+        }
+
+        .btn-next:hover {
+            background: #1e4ed8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+        <a href="patient_dashboard" class="{{ 'active' if active_page == 'dashboard' else '' }}">Dashboard</a>
+        <a href="assessment" class="{{ 'active' if active_page == 'assessment' else '' }}">Start Assessment</a>
+        <a href="timeline" class="{{ 'active' if active_page == 'timeline' else '' }}">Health Timeline</a>
+        <a href="ehr" class="{{ 'active' if active_page == 'ehr' else '' }}">My EHR</a>
+        <a href="patient_profile" class="{{ 'active' if active_page == 'profile' else '' }}">My Profile</a>
+    </div>
+</div>
+
+
+    <!-- PAGE CONTENT -->
+    <div class="container">
+
+        <div class="title">Neurological Risk Assessment</div>
+        <div class="page-number">Page 1 of 4</div>
+
+        <!-- Voice Mode Box -->
+         <form method="POST">
+        <div class="voice-box">
+            <div class="voice-header">
+                <div>
+                    <div class="voice-title">Voice Mode (Kannada)</div>
+                    <div class="voice-sub">Listen to questions and respond with your voice</div>
+                </div>
+
+                <div class="toggle" onclick="toggleVoice(this)">
+                    <div class="toggle-circle"></div>
+                </div>
+            </div>
+
+            <div class="question-box">
+                <b>Current Question (1/7):</b><br>
+                ನಿಮ್ಮ ಹೆಸರು ಏನು, ಹೇಳಿ?
+            </div>
+
+            <div class="question-actions">
+                <button class="btn btn-gray">🔊 Replay Question</button>
+                <button class="btn btn-blue">🎤 Answer via Voice</button>
+            </div>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="progress">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- DEMOGRAPHICS SECTION -->
+        <div class="section-box">
+            <div class="section-header">Demographics Information</div>
+            <div class="section-sub">Basic information about you</div>
+
+            <!-- Age Slider -->
+            <div class="slider-row">
+                <label class="slider-label">Age:
+                    <span class="slider-value" name="age" id="ageValue">65 years</span>
+                </label>
+                <input type="range" min="18" max="100" value="65"
+                    oninput="ageValue.innerText=this.value + ' years'">
+            </div>
+
+            <!-- Gender + Weight -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender">
+                        <option>Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Weight (kg)</label>
+                    <input type="number" value="70" name="weight">
+                </div>
+            </div>
+
+            <!-- Height + Education -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Height (cm)</label>
+                    <input type="number" value="170" name="height">
+                </div>
+
+                <div class="form-group">
+                    <label>Education Level</label>
+                    <select name="education">
+                        <option >Select education</option>
+                        <option value="High School">High School</option>
+                        <option value="Bachelors Degree">Bachelor’s Degree</option>
+                        <option value="Masters Degree">Master’s Degree</option>
+                        <option value="Doctorate">Doctorate</option>
+                    </select>
+                </div>
+            </div>
+ <input type="hidden" name="step" value="{{ step }}">
+            <!-- Occupation + Language -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Occupation</label>
+                    <input type="text" name="occupation"  placeholder="e.g. Engineer, Teacher">
+                </div>
+
+                <div class="form-group">
+                    <label>Language Preference</label>
+                    <select name="languagePreference">
+                        <option>Select language</option>
+                        <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        
+<button type="submit" class="btn-next">Next →</button>
+
+    </div>
+</form>
+    <script>
+        function toggleVoice(el) {
+            el.classList.toggle("active");
+        }
+    </script>
+
+</body>
+
+</html>

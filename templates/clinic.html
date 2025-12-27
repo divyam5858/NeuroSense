@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intervention & Monitoring</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        .card-title i { margin-right: 6px; }
+        .progress-chart-placeholder {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container py-4">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Intervention & Monitoring</h1>
+        <p class="text-muted">Track patient progress and manage treatment interventions</p>
+    </div>
+
+    <!-- ADD CLINICAL NOTE -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title"><i class="bi bi-file-earmark-text"></i> Add Clinical Note</h5>
+        </div>
+        <div class="card-body">
+
+            <form method="POST" action="/add_note">
+
+                <!-- Select Patient -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Select Patient</label>
+                    <select class="form-select" name="patient_id" required>
+                        <option value="">Select patient...</option>
+                        <option value="1">John Smith</option>
+                        <option value="2">Mary Johnson</option>
+                    </select>
+                </div>
+
+                <!-- Note Type -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Note Type</label>
+                    <select class="form-select" name="note_type">
+                        <option value="assessment">Assessment</option>
+                        <option value="follow-up">Follow-up</option>
+                        <option value="intervention">Intervention</option>
+                        <option value="general">General Note</option>
+                    </select>
+                </div>
+
+                <!-- Textarea -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Clinical Note</label>
+                    <textarea class="form-control" name="content" rows="6" required
+                        placeholder="Enter detailed clinical observations..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-save"></i> Save Clinical Note
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- Medication Management -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="bi bi-capsule"></i> Medication Management</h5>
+                </div>
+                <div class="card-body">
+
+                    <!-- Medication Items (STATIC EXAMPLE) -->
+                    <div class="border p-3 rounded mb-3 d-flex justify-content-between">
+                        <div>
+                            <p class="fw-bold m-0">Donepezil</p>
+                            <small class="text-muted">5mg daily</small>
+                        </div>
+                        <div>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                    </div>
+
+                    <!-- Add Medication Form -->
+                    <form method="POST" action="/add_medication">
+
+                        <div class="mb-3">
+                            <label class="form-label">Medication Name</label>
+                            <input type="text" class="form-control" name="medication_name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Dosage</label>
+                            <input type="text" class="form-control" name="dosage" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Patient</label>
+                            <select class="form-select" name="patient_id" required>
+                                <option value="">Select patient...</option>
+                                <option value="1">John Smith</option>
+                                <option value="2">Mary Johnson</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-plus"></i> Add New Medication
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Follow-up Scheduling -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="bi bi-calendar-event"></i> Schedule Follow-up</h5>
+                </div>
+                <div class="card-body">
+
+                    <form method="POST" action="/schedule_appointment">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Patient</label>
+                            <select class="form-select" name="patient_id" required>
+                                <option value="">Select patient...</option>
+                                <option value="1">John Smith</option>
+                                <option value="2">Mary Johnson</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Appointment Date</label>
+                            <input type="date" class="form-control" name="appointment_date" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Appointment Type</label>
+                            <select class="form-select" name="appointment_type" required>
+                                <option value="routine">Routine Check-up</option>
+                                <option value="assessment">Cognitive Assessment</option>
+                                <option value="review">Medication Review</option>
+                                <option value="counseling">Counseling Session</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Notes</label>
+                            <textarea class="form-control" name="notes" rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-calendar"></i> Schedule Appointment
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROGRESSION TRACKING (STATIC PLACEHOLDER) -->
+    <div class="card mb-4">
+        <div class="card-header d-flex align-items-center">
+            <h5><i class="bi bi-graph-up"></i> Risk Progression Tracking</h5>
+        </div>
+        <div class="card-body">
+
+            <!-- Placeholder -->
+            <div class="progress-chart-placeholder">
+                <p class="text-muted">Assessment history will appear here.</p>
+            </div>
+
+            <div class="p-4 bg-light rounded mt-3">
+                <p class="fw-semibold">Clinical Summary</p>
+                <p class="text-muted">Track progress and compare patient improvements over time.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- COMPARISON TOOL -->
+    <div class="card mb-5">
+        <div class="card-header">
+            <h5 class="card-title">Assessment Comparison Tool</h5>
+        </div>
+        <div class="card-body">
+
+            <form method="POST" action="/compare_assessments">
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">First Assessment</label>
+                        <select class="form-select" name="assessment1" required>
+                            <option value="">Select assessment</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Second Assessment</label>
+                        <select class="form-select" name="assessment2" required>
+                            <option value="">Select assessment</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary w-100 mt-3">
+                    Compare Assessments
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

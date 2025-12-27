@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Interventions - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <style>
+        body { margin:0; background:#f6f7fb; font-family:Arial; }
+
+        .navbar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:15px 30px; background:white;
+            box-shadow:0 2px 8px rgba(0,0,0,0.05);
+        }
+        .nav-left { display:flex; align-items:center; gap:10px; }
+        .nav-logo { width:35px; }
+        .nav-title { font-size:22px; font-weight:bold; }
+
+        .nav-menu a {
+            margin:0 15px; text-decoration:none;
+            color:#333; font-weight:500;
+        }
+        .nav-menu a.active {
+            color:#1a73e8;
+            border-bottom:2px solid #1a73e8;
+            padding-bottom:5px;
+        }
+
+        .container { padding:40px 60px; }
+
+        .title { font-size:28px; font-weight:bold; }
+        .subtitle { color:#777; margin-bottom:25px; }
+
+        .card {
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.07);
+            max-width:800px;
+        }
+
+        label {
+            font-weight:600;
+            display:block;
+            margin-top:18px;
+            margin-bottom:6px;
+        }
+
+        input, select, textarea {
+            width:100%;
+            padding:12px;
+            border-radius:8px;
+            border:1px solid #ccc;
+            font-size:14px;
+        }
+
+        textarea {
+            resize:none;
+            height:120px;
+        }
+
+        .btn {
+            margin-top:25px;
+            background:#1a73e8;
+            color:white;
+            padding:12px 22px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:15px;
+        }
+        .btn:hover { background:#1558c0; }
+
+        .note {
+            margin-top:20px;
+            font-size:14px;
+            color:#666;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+        <a href="doctor_dashboard">Dashboard</a>
+        <a href="doctor_patients">Patient Management</a>
+        <a href="doctor_diagnostics_dash">Diagnostics</a>
+        <a href="doctor_interventions" class="active">Interventions</a>
+        <a href="logout" style="color:red;">Logout</a>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <div class="title">Interventions</div>
+    <div class="subtitle">
+        Recommend clinical, lifestyle, or cognitive interventions
+    </div>
+
+    <div class="card">
+
+        <form method="POST" action="doctor_interventions">
+
+            <!-- PATIENT -->
+            <label>Patient</label>
+            <select name="patient_id" required>
+                <option value="">Select Patient</option>
+                {% for p in patients %}
+                    <option value="{{ p.id }}">{{ p.full_name }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- DIAGNOSIS -->
+            <label>Diagnosis</label>
+            <select name="diagnosis" required>
+                <option value="">Select Diagnosis</option>
+                <option>Alzheimer's Disease</option>
+                <option>Parkinson's Disease</option>
+                <option>Dementia</option>
+                <option>Mild Cognitive Impairment</option>
+            </select>
+
+            <!-- INTERVENTION TYPE -->
+            <label>Intervention Type</label>
+            <select name="intervention_type" required>
+                <option value="">Select Type</option>
+                <option>Medication</option>
+                <option>Cognitive Therapy</option>
+                <option>Lifestyle Modification</option>
+                <option>Physical Therapy</option>
+                <option>Dietary Plan</option>
+            </select>
+
+            <!-- DETAILS -->
+            <label>Intervention Details</label>
+            <textarea name="details" placeholder="Describe the recommended intervention..." required></textarea>
+
+            <button type="submit" class="btn">
+                Save Intervention
+            </button>
+
+        </form>
+
+        <div class="note">
+            Interventions will be visible to patients and added to their Health Timeline.
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Patient Management - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo {
+            width: 35px;
+        }
+        .nav-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .nav-menu a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        .nav-menu a.active {
+            color: #1a73e8;
+            border-bottom: 2px solid #1a73e8;
+            padding-bottom: 5px;
+        }
+
+        .container {
+            padding: 30px 60px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .subtitle {
+            color: #777;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: 600px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            font-size: 15px;
+        }
+
+        .add-btn {
+            background: #1a73e8;
+            padding: 12px 22px;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .patient-row {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .empty-text {
+            color: #777;
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVIGATION BAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+        <a href="doctor_dashboard">Dashboard</a>
+        <a href="doctor_patients" class="active">Patient Management</a>
+        <a href="doctor_diagnostics_dash">Diagnostics</a>
+        <a href="doctor_interventions">Interventions</a>
+        <a href="logout" style="color:red;">Logout</a>
+    </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="container">
+
+    <div class="title">Patient Management</div>
+    <div class="subtitle">Manage your patient roster</div>
+
+    <!-- SEARCH (NO UI CHANGE) -->
+    <form method="get" class="top-actions">
+        <input type="text"
+               name="search"
+               value="{{ search }}"
+               placeholder="Search patients by name or email..."
+               class="search-input">
+        <a href="doctor_patients_add" class="add-btn">➕ Add New Patient</a>
+
+    </form>
+
+    <div class="card">
+        <div class="card-title">
+            All Patients ({{ patients|length }})
+        </div>
+
+        {% if patients and patients|length > 0 %}
+            {% for p in patients %}
+                <div class="patient-row">
+                    <strong>{{ p.full_name }}</strong> — {{ p.email }}
+                    ({{ p.age }} yrs, {{ p.gender }})
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-text">No patients found.</div>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>

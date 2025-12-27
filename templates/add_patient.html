@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Patient - NeuroSense</title>
+    <style>
+        body { font-family: Arial; background:#f6f7fb; }
+        .container {
+            max-width:500px;
+            margin:60px auto;
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+        h2 { margin-bottom:20px; }
+        label { display:block; margin-top:15px; font-weight:600; }
+        input, select {
+            width:100%;
+            padding:12px;
+            border-radius:8px;
+            border:1px solid #ccc;
+            margin-top:6px;
+        }
+        button {
+            margin-top:25px;
+            width:100%;
+            padding:12px;
+            background:#1a73e8;
+            color:white;
+            border:none;
+            border-radius:10px;
+            font-size:15px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add New Patient</h2>
+
+    <form method="POST" action="doctor_patients_add">
+        <label>Full Name</label>
+        <input type="text" name="full_name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Phone</label>
+        <input type="text" name="phone">
+
+        <label>Age</label>
+        <input type="number" name="age">
+
+        <label>Gender</label>
+        <select name="gender">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+
+        <label>Blood Group</label>
+        <input type="text" name="blood_type">
+
+        <label>Password</label>
+        <input type="text" name="password" value="123" required>
+
+        <button type="submit">Save Patient</button>
+    </form>
+</div>
+
+</body>
+</html>

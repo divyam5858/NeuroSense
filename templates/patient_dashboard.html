@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Patient Dashboard - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body { margin:0; font-family:Arial; background:#f8fafc; }
+
+        /* NAVBAR */
+        .navbar {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:14px 35px;
+            background:white;
+            border-bottom:1px solid #e5e7eb;
+        }
+        .nav-left { display:flex; align-items:center; gap:10px; }
+        .nav-logo { width:35px; }
+        .nav-title { font-size:22px; font-weight:bold; }
+
+        .nav-menu {
+            display:flex;
+            align-items:center;
+        }
+
+        .nav-menu a {
+            margin:0 18px;
+            padding-bottom:6px;
+            text-decoration:none;
+            color:#4b5563;
+            font-weight:500;
+        }
+        .nav-menu a.active {
+            color:#2563eb;
+            border-bottom:3px solid #2563eb;
+        }
+
+        .nav-menu a.logout {
+            color:#dc2626;
+            font-weight:bold;
+        }
+        .nav-menu a.logout:hover {
+            border-bottom:3px solid #dc2626;
+        }
+
+        /* PAGE LAYOUT */
+        .container {
+            padding:40px 55px;
+        }
+
+        .title {
+            font-size:32px;
+            font-weight:bold;
+            margin-bottom:8px;
+        }
+        .subtitle {
+            color:#6b7280;
+            margin-bottom:25px;
+        }
+
+        .section-title {
+            font-size:22px;
+            font-weight:bold;
+            margin-top:25px;
+            margin-bottom:10px;
+        }
+        .section-sub {
+            color:#6b7280;
+            margin-bottom:20px;
+        }
+
+        .quick-actions {
+            display:flex;
+            gap:20px;
+            margin-top:20px;
+        }
+
+        .qa-card {
+            background:white;
+            width:200px;
+            padding:25px 15px;
+            border-radius:14px;
+            border:1px solid #e5e7eb;
+            text-align:center;
+            cursor:pointer;
+            transition:0.2s;
+        }
+        .qa-card:hover {
+            border-color:#2563eb;
+            transform:translateY(-3px);
+        }
+        .qa-card img {
+            width:38px;
+            margin-bottom:10px;
+        }
+        .qa-title {
+            font-size:16px;
+            font-weight:bold;
+            color:#374151;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+
+        <a href="{{ url_for('patient_dashboard') }}"
+           class="{{ 'active' if active_page=='dashboard' else '' }}">
+           Dashboard
+        </a>
+
+        <a href="assessment"
+           class="{{ 'active' if active_page=='assessment' else '' }}">
+           Start Assessment
+        </a>
+
+        <a href="timeline" 
+           class="{{ 'active' if active_page=='timeline' else '' }}">
+           Health Timeline
+        </a>
+
+        <a href="ehr"
+           class="{{ 'active' if active_page=='ehr' else '' }}">
+           My EHR
+        </a>
+
+        <a href="patient_profile"
+           class="{{ 'active' if active_page=='profile' else '' }}">
+           My Profile
+        </a>
+
+        <!-- LOGOUT -->
+        <a href="logout" class="logout">
+            Logout
+        </a>
+
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+    <div class="title">Welcome back, {{ patient }}!</div>
+    <div class="subtitle">Here’s your health overview</div>
+
+    <div class="section-title">Your Risk Assessments</div>
+    <div class="section-sub">No assessments yet. Start one to see your risk scores.</div>
+
+    <div class="section-title">Quick Actions</div>
+
+    <div class="quick-actions">
+
+        <a href="/assessment" class="qa-card" style="text-decoration:none;">
+            <img src="{{ url_for('static', filename='icon_assessment.png') }}">
+            <div class="qa-title">Start Assessment</div>
+        </a>
+
+        <a href="/timeline" class="qa-card" style="text-decoration:none;">
+            <img src="{{ url_for('static', filename='icon_timeline.png') }}">
+            <div class="qa-title">Health Timeline</div>
+        </a>
+
+        <a href="/ehr" class="qa-card" style="text-decoration:none;">
+            <img src="{{ url_for('static', filename='icon_ehr.png') }}">
+            <div class="qa-title">My EHR</div>
+        </a>
+
+        <a href="/patient_profile" class="qa-card" style="text-decoration:none;">
+            <img src="{{ url_for('static', filename='icon_profile.png') }}">
+            <div class="qa-title">My Profile</div>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

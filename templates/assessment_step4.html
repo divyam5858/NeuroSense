@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cognitive Test Questions - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f7fb;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            width: 35px;
+        }
+
+        .nav-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding-bottom: 6px;
+        }
+
+        .nav-menu a.active {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        /* PAGE LAYOUT */
+        .container {
+            padding: 40px 60px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .page-number {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        /* PROGRESS BAR */
+        .progress {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .progress-fill {
+            width: 100%;
+            height: 100%;
+            background: #1d9bf0;
+            border-radius: 10px;
+        }
+
+        /* SECTION BOX */
+        .section-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        /* QUESTIONS */
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+        }
+
+        /* SUBMIT BUTTON */
+        .btn-next {
+            padding: 14px 40px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            float: right;
+            text-decoration: none;
+        }
+
+        .btn-next:hover {
+            background: #1e4ed8;
+        }
+
+        /* ERROR POPUP */
+        .error-popup {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #dc2626;
+            color: white;
+            padding: 18px 22px;
+            border-radius: 10px;
+            font-size: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+        <a href="patient_dashboard" class="active">Dashboard</a>
+        <a href="assessment">Start Assessment</a>
+        <a href="timeline">Health Timeline</a>
+        <a href="ehr">My EHR</a>
+        <a href="patient_profile">My Profile</a>
+    </div>
+</div>
+
+    <!-- CONTENT -->
+    <div class="container">
+
+        <div class="title">Cognitive Test Questions</div>
+        <div class="page-number">Page 4 of 4</div>
+
+        <div class="progress">
+            <div class="progress-fill"></div>
+        </div>
+<form method="POST">
+        <div class="section-box">
+
+            <div class="section-header">Cognitive Assessment</div>
+            <div class="section-sub">Please answer the following questions</div>
+
+            <label>Memory Complaints</label>
+  <select name="memoryComplaints" class="form-control">
+    <option value="none">None</option>
+    <option value="mild">Mild</option>
+    <option value="moderate">Moderate</option>
+    <option value="severe">Severe</option>
+  </select>
+
+  <label>Speech Issues</label>
+  <select name="speechIssues" class="form-control">
+    <option value="none">None</option>
+    <option value="mild">Mild</option>
+    <option value="moderate">Moderate</option>
+    <option value="severe">Severe</option>
+  </select>
+
+  <label>Neurological Symptoms</label>
+  <div class="form-check">
+    {% for item in ["Tremors","Balance problems","Coordination issues","Stiffness","Slowed movement","Vision changes","Headaches","Dizziness","None"] %}
+      <input type="checkbox" class="form-check-input" name="neurologicalSymptoms" value="{{ item }}">
+      <label class="form-check-label">{{ item }}</label><br>
+    {% endfor %}
+  </div>
+
+  <label>Mood Changes</label>
+  <textarea class="form-control" name="moodChanges"></textarea>
+
+  <button class="btn btn-secondary mt-3" formaction="assessment?step=3">Previous</button>
+  <button class="btn btn-success mt-3">Submit Assessment</button>
+
+    </div>
+</form>
+    <!-- ERROR POPUP -->
+    <div id="errorPopup" class="error-popup">
+        Assessment Error: Please answer all questions.
+    </div>
+
+  
+</body>
+</html>

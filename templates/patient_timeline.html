@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Health Timeline - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            width: 35px;
+        }
+
+        .nav-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-menu a {
+            margin: 0 18px;
+            padding-bottom: 6px;
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .nav-menu a.active {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        /* PAGE CONTAINER */
+        .container {
+            padding: 40px 55px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        /* FILTER BUTTONS */
+        .filter-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-filter,
+        .btn-export {
+            padding: 10px 18px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-filter:hover,
+        .btn-export:hover {
+            border-color: #2563eb;
+        }
+
+        /* TIMELINE BOX */
+        .timeline-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .timeline-item {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .timeline-date {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .timeline-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e0e7ff;
+            color: #2563eb;
+            font-size: 12px;
+            border-radius: 20px;
+        }
+
+        .empty-content {
+            color: #6b7280;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .empty-content i {
+            font-size: 48px;
+            color: #9ca3af;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* FILTER PANEL */
+        #filterPanel {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        #filterPanel select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+        <a href="{{ url_for('patient_dashboard') }}"
+           class="{{ 'active' if active_page=='dashboard' else '' }}">
+           Dashboard
+        </a>
+
+        <a href="assessment"
+           class="{{ 'active' if active_page=='assessment' else '' }}">
+           Start Assessment
+        </a>
+
+        <a href="timeline" 
+           class="{{ 'active' if active_page=='timeline' else '' }}">
+           Health Timeline
+        </a>
+
+        <a href="ehr"
+           class="{{ 'active' if active_page=='ehr' else '' }}">
+           My EHR
+        </a>
+
+        <a href="patient_profile"
+           class="{{ 'active' if active_page=='profile' else '' }}">
+           My Profile
+        </a>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+    <div class="title">Health Timeline</div>
+    <div class="subtitle">Your complete medical history</div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+        <button class="btn-filter" onclick="toggleFilter()">🔍 Filter</button>
+        <button class="btn-filter" onclick="showAll()">All Events ▼</button>
+        <button class="btn-export" onclick="exportTimeline()">⤓ Export</button>
+    </div>
+
+    <!-- FILTER PANEL -->
+    <div id="filterPanel">
+        <form method="GET" action="timeline">
+            <select name="disease">
+                <option value="">Select Disease</option>
+                <option value="Alzheimer's">Alzheimer's</option>
+                <option value="Parkinson's">Parkinson's</option>
+                <option value="Dementia">Dementia</option>
+            </select>
+
+            <select name="type">
+                <option value="">Event Type</option>
+                <option value="diagnosis">Diagnosis</option>
+            </select>
+
+            <button type="submit" class="btn-filter">Apply</button>
+        </form>
+    </div>
+
+    <!-- TIMELINE BOX -->
+    <div class="timeline-box">
+
+        {% if events and events|length > 0 %}
+            {% for e in events %}
+                <div class="timeline-item">
+                    <div class="timeline-title">{{ e.title }}</div>
+                    <div class="timeline-date">
+                        {{ e.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                    </div>
+                    <div class="timeline-desc">{{ e.description }}</div>
+                    <span class="timeline-tag">{{ e.disease }}</span>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <div class="empty-content">
+                <i>📅</i>
+                No events found for this filter
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+function toggleFilter() {
+    const panel = document.getElementById("filterPanel");
+    panel.style.display = panel.style.display === "none" ? "block" : "none";
+}
+
+function showAll() {
+    window.location.href = "timeline";
+}
+
+function exportTimeline() {
+    window.location.href = "timeline_export";
+}
+</script>
+
+</body>
+</html>

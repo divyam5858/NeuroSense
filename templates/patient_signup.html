@@ -1,0 +1,40 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Patient Signup - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+<div class="page-container">
+
+    <!-- Logo + Title -->
+    <div class="header-section">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="Logo">
+        <h1 class="title">NeuroSense</h1>
+        <p class="subtitle">Advanced Neurodegenerative Disease Risk Assessment</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+
+        <!-- Tabs -->
+     
+        <form method="POST" action="patient_signup">
+              <input type="text" name="name" placeholder="Enter Your Name" required>
+            <input type="email" name="email" placeholder="your.email@example.com" required>
+            <input type="password" name="password" placeholder="Enter your password" required>
+            <button type="submit" class="btn-primary">Sign Up</button>
+        </form>
+
+        <p class="create-account">
+         Already have a account?
+            <a href="patient_login">SignIn</a>
+        </p>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Diagnostics - NeuroSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <style>
+        body { margin:0; background:#f6f7fb; font-family:Arial; }
+
+        /* NAVBAR */
+        .navbar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:15px 30px; background:white;
+            box-shadow:0 2px 8px rgba(0,0,0,0.05);
+        }
+        .nav-left { display:flex; align-items:center; gap:10px; }
+        .nav-logo { width:35px; }
+        .nav-title { font-size:22px; font-weight:bold; }
+
+        .nav-menu a {
+            margin:0 15px; text-decoration:none; color:#333;
+            font-weight:500;
+        }
+        .nav-menu a.active {
+            color:#1a73e8;
+            border-bottom:2px solid #1a73e8;
+            padding-bottom:5px;
+        }
+
+        /* PAGE LAYOUT */
+        .container { padding:30px 50px; }
+        .section-title { font-size:26px; font-weight:bold; }
+        .subtitle { margin-bottom:20px; color:#666; }
+        .layout { display:flex; gap:25px; }
+
+        /* UPLOAD + FORM */
+        .upload-box, .form-box {
+            background:white; padding:25px; border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+            flex:1;
+        }
+
+        /* MRI UPLOAD AREA */
+        .upload-area {
+            height:260px; border:2px dashed #a9b2c3; border-radius:10px;
+            display:flex; justify-content:center; align-items:center;
+            text-align:center; padding:20px;
+            color:#555; cursor:pointer;
+        }
+        .upload-area:hover {
+            border-color:#1a73e8;
+        }
+
+        /* FORM INPUTS */
+        .form-group { margin-bottom:18px; }
+        label { font-weight:bold; }
+
+        select, input[type="number"] {
+            width:100%; padding:10px; border-radius:8px;
+            border:1px solid #ccc; margin-top:5px;
+        }
+
+        .slider-label { font-weight:bold; margin-top:20px; }
+        .slider-value { float:right; }
+        input[type="range"] { width:100%; margin-top:10px; }
+
+        /* UPLOAD STATUS */
+        #uploadStatus {
+            margin-top:10px;
+            font-weight:bold;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="nav-logo">
+        <span class="nav-title">NeuroSense</span>
+    </div>
+
+    <div class="nav-menu">
+    <a href="/doctor/dashboard">Dashboard</a>
+    <a href="/doctor/patients">Patient Management</a>
+    <a href="/doctor/diagnostics" class="active">Diagnostics</a>
+    <a href="/doctor/interventions">Interventions</a>
+    <a href="/logout" style="color:red;">Logout</a>
+</div>
+
+
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="container">
+
+    <div class="section-title">Diagnostics</div>
+    <div class="subtitle">Upload MRI and clinical data for advanced analysis</div>
+
+    <div class="layout">
+
+   
+        <!-- MRI UPLOAD SECTION -->
+        <div class="upload-box">
+            <h3>MRI Upload</h3>
+            <p>Upload brain MRI scans for analysis</p>
+
+            <!-- Upload area -->
+            <div class="upload-area" onclick="document.getElementById('mriInput').click()">
+                <div>
+                    <img src="{{ url_for('static', filename='upload_icon.png') }}" width="50"><br><br>
+                    <b>Click to upload or drag & drop</b><br><br>
+                    DICOM, NIfTI, or standard image formats<br>
+                    Max file size: 100MB
+                </div>
+            </div>
+
+            <!-- Hidden file input -->
+            <input type="file" id="mriInput" style="display:none" name="mri_file_path">
+
+            <!-- Upload status -->
+            <p id="uploadStatus"></p>
+              <div class="form-group">
+                <label>primary_diagnosis</label>
+                <input type="text" name="primary_diagnosis" value="Alzheimer's">
+            </div>
+
+              <div class="form-group">
+                <label>diagnosis_confidence</label>
+                 <input type="text" name="diagnosis_confidence" value="1.0">
+            </div>
+
+              <div class="form-group">
+                <label>secondary_diagnoses</label>
+                 <input type="text" name="secondary_diagnoses" value="Dementia">
+            </div>
+              <div class="form-group">
+                <label>recommendations</label>
+                 <input type="text" name="recommendations" value="Consult neurologist">
+            </div>
+              <div class="form-group">
+                <label>key_findings</label>
+                 <input type="text" name="key_findings" value="Primary disease risk: Alzheimer's">
+            </div>
+
+
+        </div>
+        <input type="hidden" name="mri_file_path" id="mriFilePath">
+
+        <input type="hidden" name="doctor_id" value="1">
+        <!-- CLINICAL FORM SECTION -->
+        <div class="form-box">
+            <h3>Clinical Data Entry</h3>
+
+            <div class="form-group">
+                <label>Select Patient *</label>
+                <select name="patient_id" onchange="loadPatientAssessment(this.value)">
+    <option value="">Select patient</option>
+    {% for p in patients %}
+        <option value="{{ p.id }}">{{ p.full_name }}</option>
+    {% endfor %}
+</select>
+
+            </div>
+
+            <!-- MMSE Slider -->
+            <label class="slider-label">
+                MMSE Score:
+                <span class="slider-value" id="mmseValue">24 / 30</span>
+            </label>
+            <input type="range" name="mmse_score" min="0" max="30" value="24" oninput="mmseValue.innerText = this.value + ' / 30'">
+
+            <div class="form-group">
+                <label>CDR Score *</label>
+                <select name="cdr_score">
+                    <option value="0.5">0.5 - Very Mild Dementia</option>
+                    <option value="1">1 - Mild Dementia</option>
+                    <option value="2">2 - Moderate Dementia</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>CSF Tau (pg/mL)</label>
+                <input type="number" value="300" name="csf_tau_level">
+            </div>
+
+            <div class="form-group">
+                <label>CSF Aβ42 (pg/mL)</label>
+                <input type="number" value="500" name="csf_abeta42_level">
+            </div>
+
+            <div class="form-group">
+                <label>APOE ε4 Status</label>
+                <select name="apoe_status">
+                    <option value="Heterozygous">Heterozygous (1 allele)</option>
+                    <option value="Homozygous">Homozygous (2 alleles)</option>
+                    <option value="Negative">Negative</option>
+                </select>
+            </div>
+
+             <button type="button" class="btn btn-primary w-100" onclick="runDiagnostics()">
+    <i class="bi bi-cpu"></i> Run Diagnostics
+</button>
+
+        </div>
+
+   
+
+    </div>
+
+</div>
+
+<script>
+function loadPatientAssessment(patientId) {
+    if (!patientId) return;
+
+    fetch(`/doctor/patient/latest-assessment/${patientId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== "success") return;
+
+            document.querySelector("input[name='primary_diagnosis']").value =
+                data.primary_diagnosis;
+
+            document.querySelector("input[name='diagnosis_confidence']").value =
+                data.diagnosis_confidence;
+
+            document.querySelector("input[name='secondary_diagnoses']").value =
+                data.secondary_diagnoses;
+
+            document.querySelector("input[name='recommendations']").value =
+                data.recommendations;
+
+            document.querySelector("input[name='key_findings']").value =
+                data.key_findings;
+        })
+        .catch(err => {
+            console.error("Auto-fill error:", err);
+        });
+}
+</script>
+
+<script>
+    document.getElementById("mriInput").addEventListener("change", function() {
+    let file = this.files[0];
+    document.getElementById("uploadStatus").innerText = "Selected: " + file.name;
+    document.getElementById("mriFilePath").value = file.name;
+});
+</script>
+<!-- MRI UPLOAD SCRIPT -->
+<script>
+function runDiagnostics() {
+
+    const payload = {
+        patient_id: document.querySelector("select[name='patient_id']").value,
+        doctor_id: document.querySelector("input[name='doctor_id']").value,
+
+        mmse_score: document.querySelector("input[name='mmse_score']").value,
+        cdr_score: document.querySelector("select[name='cdr_score']").value,
+
+        csf_tau_level: document.querySelector("input[name='csf_tau_level']").value,
+        csf_abeta42_level: document.querySelector("input[name='csf_abeta42_level']").value,
+
+        apoe_status: document.querySelector("select[name='apoe_status']").value,
+
+        mri_file_path: document.querySelector("input[name='mri_file_path']")?.value || null,
+
+        primary_diagnosis: document.querySelector("input[name='primary_diagnosis']").value,
+        diagnosis_confidence: document.querySelector("input[name='diagnosis_confidence']").value,
+        secondary_diagnoses: [document.querySelector("input[name='secondary_diagnoses']").value],
+        recommendations: [document.querySelector("input[name='recommendations']").value],
+        key_findings: [document.querySelector("input[name='key_findings']").value]
+    };
+
+    console.log("Sending Payload:", payload);
+
+    fetch("/doctor_diagnostics", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Diagnostic Response:", data);
+
+        alert(
+            "Primary Diagnosis: " + data.primary_diagnosis + "\n" +
+            "Confidence: " + data.diagnosis_confidence + "\n" +
+            "Report ID: " + data.report_id
+        );
+    })
+    .catch(err => {
+        console.error("ERROR running diagnostics:", err);
+        alert("Error running diagnostics!");
+    });
+}
+</script>
+
+</body>
+</html>

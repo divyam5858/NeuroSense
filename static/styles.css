@@ -1,0 +1,203 @@
+/* ================================
+   GLOBAL STYLES
+================================== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #eef3f9, #ffffff);
+}
+
+.page-container {
+    text-align: center;
+    padding-top: 60px;
+}
+
+/* ================================
+   LOGO & TITLE
+================================== */
+
+.logo {
+    width: 70px;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+    color: #1a1a1a;
+}
+
+.subtitle {
+    color: #666;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* ================================
+   LOGIN CARD
+================================== */
+
+.login-card {
+    width: 420px;
+    background: white;
+    margin: 30px auto;
+    padding: 30px 35px;
+    border-radius: 16px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 25px;
+    margin: 0 10px;
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+    border-bottom: 2px solid transparent;
+    transition: 0.2s;
+}
+
+.tab:hover {
+    color: #1a73e8;
+}
+
+.tab.active {
+    color: #1a73e8;
+    border-bottom: 3px solid #1a73e8;
+}
+
+/* ================================
+   FORM INPUT STYLES
+================================== */
+
+.login-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.login-desc {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: #1a73e8;
+    outline: none;
+    box-shadow: 0px 0px 6px rgba(26, 115, 232, 0.3);
+}
+
+/* ================================
+   BUTTON
+================================== */
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background: #155bc0;
+}
+
+/* ================================
+   EXTRA TEXT & LINKS
+================================== */
+
+.create-account {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.create-account a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}
+
+/* ================================
+   ERROR MESSAGE
+================================== */
+
+.error {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-logo {
+    width: 35px;
+}
+
+.nav-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 28px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    padding-bottom: 6px;
+    font-size: 15px;
+}
+
+.nav-menu a.active {
+    color: #2563eb;
+    border-bottom: 3px solid #2563eb;
+}
+
+.nav-menu a:hover {
+    color: #2563eb;
+}
